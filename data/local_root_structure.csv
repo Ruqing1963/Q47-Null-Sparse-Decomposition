@@ -1,0 +1,40 @@
+# omega(p) for Q(n) = n^47 - (n-1)^47
+# Proposition 2.1: omega(p) = 0 if p = 47 or p ≢ 1 (mod 47); omega(p) = 46 if p ≡ 1 (mod 47)
+# Only non-inert primes and small primes shown; all 823 primes ≤ 6299 verified
+Prime_p,Type,omega_theory,omega_brute,Match
+2,inert,0,0,True
+3,inert,0,0,True
+5,inert,0,0,True
+7,inert,0,0,True
+11,inert,0,0,True
+13,inert,0,0,True
+17,inert,0,0,True
+19,inert,0,0,True
+23,inert,0,0,True
+29,inert,0,0,True
+31,inert,0,0,True
+37,inert,0,0,True
+41,inert,0,0,True
+43,inert,0,0,True
+47,ramified,0,0,True
+53,inert,0,0,True
+283,splitting,46,46,True
+659,splitting,46,46,True
+941,splitting,46,46,True
+1129,splitting,46,46,True
+1223,splitting,46,46,True
+1693,splitting,46,46,True
+1787,splitting,46,46,True
+2069,splitting,46,46,True
+2351,splitting,46,46,True
+2539,splitting,46,46,True
+2633,splitting,46,46,True
+3761,splitting,46,46,True
+4231,splitting,46,46,True
+4513,splitting,46,46,True
+4889,splitting,46,46,True
+5077,splitting,46,46,True
+5171,splitting,46,46,True
+5641,splitting,46,46,True
+5923,splitting,46,46,True
+6299,splitting,46,46,True
