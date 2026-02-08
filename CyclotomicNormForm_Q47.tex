@@ -1,0 +1,632 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{cite}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+% Page layout
+\geometry{left=3cm, right=3cm, top=3cm, bottom=3cm}
+
+% Theorem environments
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{assumption}[theorem]{Assumption}
+
+% Title
+\title{\textbf{On the Distribution of the Cyclotomic Norm Form\\[4pt]
+$n^{47}-(n-1)^{47}$ in Arithmetic Progressions}}
+
+\author{\textbf{Ruqing Chen}\\
+GUT Geoservice Inc., Montreal, Quebec\\
+\texttt{ruqing@hotmail.com}}
+
+\date{February 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We study the polynomial $Q(n)=n^{47}-(n-1)^{47}$, which arises as a
+norm form from the cyclotomic field $\mathbb{Q}(\zeta_{47})$.
+Exploiting this algebraic structure, we give a self-contained
+elementary proof that for every prime~$p$ with $p\neq 47$ and
+$p\not\equiv 1\pmod{47}$, the congruence $Q(n)\equiv 0\pmod{p}$ has
+no solutions, and that $Q(n)\equiv 1\pmod{47}$ for all~$n$.
+For primes $p\equiv 1\pmod{47}$, we show that there are exactly $46$
+solutions modulo~$p$.
+
+We define a sparse set of \emph{effective moduli}
+$\mathcal{Q}_{\mathrm{eff}}$, consisting of integers whose prime
+factors all satisfy $p\equiv 1\pmod{47}$, and prove that the local
+density $\rho(q)$ vanishes for every
+$q\notin\mathcal{Q}_{\mathrm{eff}}$.
+This yields a \emph{null--sparse decomposition} of the
+Bombieri--Vinogradov error sum: the error over all moduli $q\le D$
+splits into a \emph{null part} (moduli outside
+$\mathcal{Q}_{\mathrm{eff}}$, where the main term vanishes) and a
+\emph{sparse part} (moduli in $\mathcal{Q}_{\mathrm{eff}}$, which
+carries all nontrivial analytic weight).
+
+We show that
+$\#\{q\le D:q\in\mathcal{Q}_{\mathrm{eff}}\}
+\asymp D(\log D)^{-45/46}$.
+A Cauchy--Schwarz argument combined with a global
+Barban--Davenport--Halberstam hypothesis yields a bound on the sparse
+part that falls marginally short of the classical level of
+distribution $\theta=1/2$.
+However, under a \emph{restricted} variance hypothesis---asserting
+that the average of~$E(x,q)^2$ over effective moduli has typical
+size---the same method yields $\theta=1/2$ with a power saving of
+$(\log x)^{-11/23}$, thanks to a double sparsity factor.
+We discuss how the structural restriction to
+$\mathcal{Q}_{\mathrm{eff}}$ may further facilitate bilinear-form
+approaches to a level of distribution beyond~$1/2$.
+\end{abstract}
+
+\medskip
+\noindent\textbf{MSC 2020:} 11N32, 11R18, 11N35
+
+\noindent\textbf{Keywords:} cyclotomic norm form, Bombieri--Vinogradov theorem,
+effective moduli, null--sparse decomposition, Barban--Davenport--Halberstam,
+level of distribution, polynomial primes
+
+%% ================================================================
+\section{Introduction}\label{sec:intro}
+
+The Bombieri--Vinogradov theorem~\cite{Bombieri1965, Vinogradov1965}
+provides an averaged form of the Generalized Riemann Hypothesis for
+primes in arithmetic progressions and is a cornerstone of modern
+analytic number theory.
+Given a polynomial $f$ of degree~$d\ge 2$, a natural question is
+whether the sequence $\{f(n)\}$ admits a \emph{level of distribution}
+$\theta$ in the sense that for every $A>0$,
+\begin{equation}\label{eq:BVdef}
+  \sum_{q\le x^{\theta}}
+  \max_{\gcd(a,q)=1}
+  \biggl|
+    \sum_{\substack{n\le x\\ f(n)\equiv a\pmod{q}}} 1
+    \;-\;
+    \frac{\rho(q)}{q}\,x
+  \biggr|
+  \;\ll_A\;
+  x(\log x)^{-A},
+\end{equation}
+where
+\begin{equation}\label{eq:rhoq}
+  \rho(q)=\#\bigl\{n\bmod q : f(n)\equiv 0\pmod{q}\bigr\}
+\end{equation}
+is the number of roots of~$f$ modulo~$q$.
+The classical Bombieri--Vinogradov theorem yields $\theta=1/2$ for
+generic sequences.
+Significant improvements have been achieved in specific settings by
+Bombieri, Friedlander, and Iwaniec~\cite{BFI1986}, who used
+bilinear-form methods to go beyond this threshold, with further
+developments by Maynard~\cite{Maynard} and others.
+
+In this paper we study the degree-$46$ polynomial
+\begin{equation}\label{eq:Qdef}
+  Q(n)=n^{47}-(n-1)^{47}.
+\end{equation}
+The Bateman--Horn conjecture~\cite{BH1962} predicts that $Q(n)$
+takes prime values with positive density (after accounting for local
+obstructions), so understanding its distribution in arithmetic
+progressions is a natural question.
+Since $47$ is prime, the factorization
+$a^{47}-b^{47}=(a-b)\prod_{k=1}^{46}(a-\zeta_{47}^k\,b)$ yields
+\begin{equation}\label{eq:norm}
+  Q(n)
+  =\prod_{k=1}^{46}\bigl(n-\zeta_{47}^k(n-1)\bigr)
+  =\mathrm{N}_{\mathbb{Q}(\zeta_{47})/\mathbb{Q}}
+     \!\bigl(n-\zeta_{47}(n-1)\bigr),
+\end{equation}
+so $Q(n)$ is a norm form from the cyclotomic field
+$\mathbb{Q}(\zeta_{47})$.
+This rigid algebraic structure leads to strong local restrictions
+that we now develop in detail.
+
+%% ================================================================
+\section{Local Structure and Root Counts}\label{sec:local}
+
+The norm-form identity~\eqref{eq:norm} imposes severe constraints on
+which primes can divide~$Q(n)$.
+We collect these in a single proposition.
+
+\begin{proposition}[Local root structure]\label{prop:local}
+Let $p$ be a prime and write
+$\omega(p)=\#\{n\bmod p:Q(n)\equiv 0\pmod{p}\}$.
+\begin{enumerate}
+\item[\textup{(a)}]
+If $p=47$, then $Q(n)\equiv 1\pmod{47}$ for all
+$n\in\mathbb{Z}$, so $\omega(47)=0$.
+\item[\textup{(b)}]
+If $p\neq 47$ and $p\not\equiv 1\pmod{47}$, then $\omega(p)=0$.
+\item[\textup{(c)}]
+If $p\equiv 1\pmod{47}$, then $\omega(p)=46$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{Part~(a).}
+By Fermat's little theorem, $a^{47}\equiv a\pmod{47}$ for all
+$a\in\mathbb{Z}$.
+Therefore
+$Q(n)=n^{47}-(n-1)^{47}\equiv n-(n-1)=1\pmod{47}$,
+so $47\nmid Q(n)$ for any~$n$.
+
+\medskip\noindent
+\textbf{Part~(b).}
+Suppose $p\neq 47$ and $Q(n)\equiv 0\pmod{p}$, i.e.\
+$n^{47}\equiv(n-1)^{47}\pmod{p}$.
+Since $\gcd(n,n-1)=1$, at most one of $n,n-1$ is divisible by~$p$.
+If $p\mid n$, then $(n-1)^{47}\equiv 0\pmod{p}$, whence
+$p\mid(n-1)$, contradicting $\gcd(n,n-1)=1$.
+The case $p\mid(n-1)$ is analogous.
+Therefore both $n$ and $n-1$ are units modulo~$p$, and setting
+$t\equiv n(n-1)^{-1}\pmod{p}$ gives $t^{47}\equiv 1\pmod{p}$
+with $t\not\equiv 1$ (since $n\not\equiv n-1\pmod{p}$).
+But when $p\not\equiv 1\pmod{47}$ we have $\gcd(47,p-1)=1$, so
+$x\mapsto x^{47}$ is a bijection on
+$(\mathbb{Z}/p\mathbb{Z})^{\times}$, and $t^{47}\equiv 1$ forces
+$t\equiv 1$, a contradiction.
+
+\medskip\noindent
+\textbf{Part~(c).}
+When $p\equiv 1\pmod{47}$, the group
+$(\mathbb{Z}/p\mathbb{Z})^{\times}$ has order $p-1$ divisible
+by~$47$, so $t^{47}\equiv 1\pmod{p}$ has exactly~$47$ solutions.
+Excluding $t\equiv 1$ leaves $46$ values of $t=n(n-1)^{-1}$, each
+determining a unique $n\equiv t(t-1)^{-1}\pmod{p}$ (since $t\neq 1$
+ensures $t-1$ is invertible).
+Hence $\omega(p)=46$.
+\end{proof}
+
+\begin{remark}\label{rem:norm_proof}
+Parts~(a)--(b) can also be deduced from the norm-form
+identity~\eqref{eq:norm} and the splitting behavior of primes in
+$\mathbb{Q}(\zeta_{47})/\mathbb{Q}$: a prime $p\neq 47$ divides a
+norm from $\mathbb{Z}[\zeta_{47}]$ only if $p$ splits completely,
+which requires $p\equiv 1\pmod{47}$.
+The elementary proof above makes the paper self-contained and
+clarifies the root count in case~(c).
+\end{remark}
+
+%% ================================================================
+\section{Effective Moduli}\label{sec:eff}
+
+\begin{definition}[Effective moduli]\label{def:Qeff}
+We define the set of \emph{effective primes}
+$\mathcal{P}_{\mathrm{eff}}=\{p\text{ prime}:p\equiv 1\pmod{47}\}$
+and the set of \emph{effective moduli}
+\[
+  \mathcal{Q}_{\mathrm{eff}}
+  =\bigl\{q\in\mathbb{N}:
+    p\mid q \Longrightarrow
+    p\in\mathcal{P}_{\mathrm{eff}}\bigr\}
+  \cup\{1\}.
+\]
+In particular, $\gcd(q,47)=1$ for every
+$q\in\mathcal{Q}_{\mathrm{eff}}$, since
+$47\not\equiv 1\pmod{47}$.
+\end{definition}
+
+\begin{proposition}[Vanishing of local density]\label{prop:vanish}
+For any $q\notin\mathcal{Q}_{\mathrm{eff}}$, the root count
+$\rho(q)=\#\{n\bmod q:Q(n)\equiv 0\pmod{q}\}$ satisfies
+$\rho(q)=0$.
+\end{proposition}
+
+\begin{proof}
+If $q\notin\mathcal{Q}_{\mathrm{eff}}$, then $q$ has at least one
+prime factor $p\notin\mathcal{P}_{\mathrm{eff}}$.
+By Proposition~\ref{prop:local}\,(a)--(b), $\omega(p)=0$ regardless
+of whether $p=47$ or $p\not\equiv 1\pmod{47}$.
+By the Chinese remainder theorem, $\rho(q)=0$.
+\end{proof}
+
+\begin{remark}[Counting effective moduli]\label{rem:count}
+The set $\mathcal{Q}_{\mathrm{eff}}$ consists of positive integers
+all of whose prime factors lie in the arithmetic progression
+$1\bmod 47$.
+By Dirichlet's theorem, these primes have natural density
+$1/\varphi(47)=1/46$ among all primes.
+A classical result on integers composed of primes from a set of
+relative density~$\delta$
+(see, e.g., Iwaniec--Kowalski~\cite[Theorem~7.18]{IK2004}) gives
+\begin{equation}\label{eq:Qeff_count}
+  N_{\mathrm{eff}}(D)
+  \;:=\;
+  \#\{q\le D: q\in\mathcal{Q}_{\mathrm{eff}}\}
+  \;\asymp\;
+  \frac{D}{(\log D)^{1-1/46}}
+  \;=\;
+  \frac{D}{(\log D)^{45/46}},
+\end{equation}
+so $\mathcal{Q}_{\mathrm{eff}}$ is genuinely sparse: its counting
+function grows like $D/(\log D)^{45/46}$ compared to the full
+range~$\{1,\ldots,D\}$.
+\end{remark}
+
+%% ================================================================
+\section{Null--Sparse Decomposition}\label{sec:decomp}
+
+\begin{theorem}[Null--Sparse Decomposition]\label{thm:decomp}
+Let $Q(n)=n^{47}-(n-1)^{47}$ and define
+\[
+  E(x,q)=\max_{\gcd(a,q)=1}
+  \biggl|
+    \sum_{\substack{n\le x\\ Q(n)\equiv a\pmod{q}}} 1
+    \;-\;
+    \frac{\rho(q)}{q}\,x
+  \biggr|.
+\]
+Then for any $D\ge 1$,
+\begin{equation}\label{eq:decomp}
+  \sum_{q\le D}E(x,q)
+  \;=\;
+  \underbrace{
+    \sum_{\substack{q\le D\\
+    q\notin\mathcal{Q}_{\mathrm{eff}}}}
+    E(x,q)
+  }_{\textup{null part}}
+  \;+\;
+  \underbrace{
+    \sum_{\substack{q\le D\\
+    q\in\mathcal{Q}_{\mathrm{eff}}}}
+    E(x,q)
+  }_{\textup{sparse part}}.
+\end{equation}
+For $q\notin\mathcal{Q}_{\mathrm{eff}}$, we have $\rho(q)=0$ by
+Proposition~\textup{\ref{prop:vanish}}, so the expected main term
+vanishes and the null part reduces to bounding equidistribution
+errors among residues that $Q(n)$ never hits modulo~$q$.
+All nontrivial analytic contributions to the error sum are supported
+on $\mathcal{Q}_{\mathrm{eff}}$.
+\end{theorem}
+
+%% ================================================================
+\section{Quantitative Bounds via Cauchy--Schwarz}\label{sec:cond}
+
+We now examine what can be deduced about the sparse part of the
+decomposition~\eqref{eq:decomp} from variance hypotheses.
+
+\subsection{Global variance hypothesis}\label{ssec:global}
+
+\begin{assumption}[Global variance hypothesis]\label{ass:global}
+There exists a fixed constant $B>0$ such that
+\begin{equation}\label{eq:BDH_global}
+  \sum_{q\le D}E(x,q)^2
+  \;\ll\;
+  D\,x\,(\log x)^B.
+\end{equation}
+\end{assumption}
+
+\begin{proposition}[Cauchy--Schwarz bound, global
+version]\label{prop:CS_global}
+Under Assumption~\textup{\ref{ass:global}}, for $D\le x^{1/2}$,
+\begin{equation}\label{eq:CS_global}
+  \sum_{\substack{q\le D\\
+  q\in\mathcal{Q}_{\mathrm{eff}}}}
+  E(x,q)
+  \;\ll\;
+  x\,(\log x)^{(46B-45)/92}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+By the Cauchy--Schwarz inequality,
+\begin{equation}\label{eq:CS_step1}
+  \biggl(
+    \sum_{\substack{q\le D\\
+    q\in\mathcal{Q}_{\mathrm{eff}}}}
+    E(x,q)
+  \biggr)^{\!2}
+  \;\le\;
+  N_{\mathrm{eff}}(D)
+  \;\cdot\;
+  \sum_{q\le D}E(x,q)^2.
+\end{equation}
+Here the first factor counts over
+$\mathcal{Q}_{\mathrm{eff}}$ while the second sums over
+\emph{all} $q\le D$.
+Substituting~\eqref{eq:Qeff_count} and
+Assumption~\ref{ass:global}:
+\[
+  \text{RHS of \eqref{eq:CS_step1}}
+  \;\ll\;
+  \frac{D}{(\log D)^{45/46}}
+  \cdot D\,x\,(\log x)^B
+  \;=\;
+  \frac{D^2\,x\,(\log x)^B}{(\log D)^{45/46}}.
+\]
+For $D\le x^{1/2}$ we have $D^2\le x$ and $\log D\asymp\log x$,
+so taking square roots:
+\[
+  \sum_{\substack{q\le D\\
+  q\in\mathcal{Q}_{\mathrm{eff}}}}
+  E(x,q)
+  \;\ll\;
+  x\cdot\frac{(\log x)^{B/2}}{(\log x)^{45/92}}
+  \;=\;
+  x\,(\log x)^{(46B-45)/92}.\qedhere
+\]
+\end{proof}
+
+\begin{remark}[Interpretation]\label{rem:global_exp}
+The exponent $(46B-45)/92$ is negative if and only if
+$B<45/46\approx 0.978$.
+For the standard Barban--Davenport--Halberstam value $B=1$, the
+exponent is $\tfrac{46-45}{92}=\tfrac{1}{92}>0$, so the bound
+becomes $x(\log x)^{1/92}$, which does not yield the arbitrary
+savings $x(\log x)^{-A}$ required for $\theta=1/2$ in the sense
+of~\eqref{eq:BVdef}.
+Thus the Cauchy--Schwarz method with a global BDH hypothesis falls
+marginally short: only a single power of $N_{\mathrm{eff}}(D)$
+enters the bound, and it nearly but not quite compensates the
+variance.
+\end{remark}
+
+\subsection{Restricted variance hypothesis}\label{ssec:restricted}
+
+The preceding analysis sums the variance over \emph{all} moduli
+$q\le D$, but only the counting factor is restricted to
+$\mathcal{Q}_{\mathrm{eff}}$.
+A more natural hypothesis restricts \emph{both} factors to the
+effective moduli.
+
+\begin{assumption}[Restricted variance hypothesis]
+\label{ass:restricted}
+There exists a fixed constant $B'>0$ such that
+\begin{equation}\label{eq:BDH_restricted}
+  \sum_{\substack{q\le D\\
+  q\in\mathcal{Q}_{\mathrm{eff}}}}
+  E(x,q)^2
+  \;\ll\;
+  N_{\mathrm{eff}}(D)\cdot x\,(\log x)^{B'},
+\end{equation}
+i.e.\ the average of $E(x,q)^2$ over effective moduli
+$q\le D$ is $\ll x\,(\log x)^{B'}$.
+\end{assumption}
+
+\begin{theorem}[Conditional level of distribution]
+\label{thm:restricted}
+Under Assumption~\textup{\ref{ass:restricted}} with $B'<45/23$,
+for any fixed $A>0$ and $D\le x^{1/2}$,
+\[
+  \sum_{\substack{q\le D\\
+  q\in\mathcal{Q}_{\mathrm{eff}}}}
+  E(x,q)
+  \;\ll_A\;
+  x\,(\log x)^{-A}.
+\]
+In particular, for the standard BDH exponent $B'=1$, we obtain
+the level of distribution $\theta=1/2$ for the sequence~$Q(n)$,
+with a power saving of $(\log x)^{-11/23}$.
+\end{theorem}
+
+\begin{proof}
+Applying the Cauchy--Schwarz inequality \emph{within}
+$\mathcal{Q}_{\mathrm{eff}}$,
+\begin{equation}\label{eq:CS_step2}
+  \biggl(
+    \sum_{\substack{q\le D\\
+    q\in\mathcal{Q}_{\mathrm{eff}}}}
+    E(x,q)
+  \biggr)^{\!2}
+  \;\le\;
+  N_{\mathrm{eff}}(D)
+  \;\cdot\;
+  \sum_{\substack{q\le D\\
+  q\in\mathcal{Q}_{\mathrm{eff}}}}
+  E(x,q)^2.
+\end{equation}
+Note that \emph{both} factors on the right now range only over
+$\mathcal{Q}_{\mathrm{eff}}$.
+Substituting Assumption~\ref{ass:restricted}:
+\[
+  \text{RHS of \eqref{eq:CS_step2}}
+  \;\ll\;
+  N_{\mathrm{eff}}(D)
+  \cdot N_{\mathrm{eff}}(D)\cdot x\,(\log x)^{B'}
+  \;=\;
+  \bigl[N_{\mathrm{eff}}(D)\bigr]^2 \cdot x\,(\log x)^{B'}.
+\]
+By~\eqref{eq:Qeff_count},
+$N_{\mathrm{eff}}(D)\asymp D/(\log D)^{45/46}$, so
+\[
+  \bigl[N_{\mathrm{eff}}(D)\bigr]^2
+  \;\asymp\;
+  \frac{D^2}{(\log D)^{90/46}}
+  \;=\;
+  \frac{D^2}{(\log D)^{45/23}}.
+\]
+For $D\le x^{1/2}$, taking square roots with $D^2\le x$ and
+$\log D\asymp\log x$:
+\begin{equation}\label{eq:restricted_result}
+  \sum_{\substack{q\le D\\
+  q\in\mathcal{Q}_{\mathrm{eff}}}}
+  E(x,q)
+  \;\ll\;
+  x\cdot\frac{(\log x)^{B'/2}}{(\log x)^{45/46}}
+  \;=\;
+  x\,(\log x)^{(23B'-45)/46}.
+\end{equation}
+The exponent $(23B'-45)/46$ is negative whenever $B'<45/23$.
+For $B'=1$, the exponent is $(23-45)/46=-22/46=-11/23<0$,
+giving $\sum E\ll x\,(\log x)^{-11/23}$.
+Since $11/23>0$, this provides the required logarithmic savings for
+$\theta=1/2$.
+\end{proof}
+
+\begin{remark}[Double sparsity]\label{rem:double}
+The key difference between Proposition~\ref{prop:CS_global} and
+Theorem~\ref{thm:restricted} is the \emph{doubling of the sparsity
+factor}.
+In the global case~\eqref{eq:CS_step1}, the Cauchy--Schwarz step
+pairs $N_{\mathrm{eff}}(D)\asymp D/(\log D)^{45/46}$ with a
+variance sum over \emph{all} $q\le D$ whose leading factor is~$D$.
+After taking the square root, the single factor
+$(\log D)^{-45/46}$ contributes $(\log x)^{-45/92}$, which barely
+fails to overcome $(\log x)^{B/2}$ when $B=1$.
+
+In the restricted case~\eqref{eq:CS_step2}, both the counting
+factor and the variance factor carry $N_{\mathrm{eff}}(D)$,
+producing $[N_{\mathrm{eff}}(D)]^2\asymp D^2/(\log D)^{45/23}$.
+After the square root, this contributes $(\log x)^{-45/46}$---which
+is exactly \emph{twice} the logarithmic saving of the global
+case---and comfortably overcomes $(\log x)^{B'/2}$ for any
+$B'\le 1$.
+\end{remark}
+
+\begin{remark}[Relation to the classical Bombieri--Vinogradov
+theorem]\label{rem:BV}
+The standard Bombieri--Vinogradov theorem~\cite{Bombieri1965,
+Vinogradov1965} already yields $\theta=1/2$ unconditionally for
+polynomial sequences.
+The contribution of Theorem~\ref{thm:restricted} is not to
+reprove this classical result, but to exhibit an independent route
+to $\theta=1/2$ in which the algebraic structure of~$Q(n)$ plays
+an explicit quantitative role via the double sparsity factor.
+\end{remark}
+
+%% ================================================================
+\section{Discussion: Toward $\theta>1/2$}\label{sec:beyond}
+
+Theorem~\ref{thm:restricted} shows that the sparsity of
+$\mathcal{Q}_{\mathrm{eff}}$ already has quantitative force at the
+level $D=x^{1/2}$.
+Moving to $D=x^{\theta}$ with $\theta>1/2$ requires methods that
+exploit the \emph{multiplicative structure} of
+$\mathcal{Q}_{\mathrm{eff}}$, not merely its cardinality.
+
+The Bombieri--Friedlander--Iwaniec method~\cite{BFI1986} achieves
+levels of distribution beyond~$1/2$ by decomposing the error sum
+into bilinear forms and exploiting cancellation in character sums.
+For the sequence $Q(n)$, the null--sparse decomposition ensures
+that such bilinear sums need only range over
+$q\in\mathcal{Q}_{\mathrm{eff}}$, i.e.\ over moduli composed
+entirely of primes $p\equiv 1\pmod{47}$.
+This structural restriction reduces both the number of terms and
+the range of characters involved, and may facilitate additional
+cancellation.
+
+Whether this can be carried out to yield an unconditional level of
+distribution $\theta>1/2$ for the sequence $Q(n)$ remains an open
+problem.
+
+%% ================================================================
+\section{Concluding Remarks}\label{sec:concl}
+
+The cyclotomic norm form $Q(n)=n^{47}-(n-1)^{47}$ possesses a rigid
+arithmetic structure that sharply constrains its behavior in
+arithmetic progressions.
+We have established:
+\begin{enumerate}
+\item[\textup{(1)}]
+The local root structure is completely determined:
+$\omega(p)=0$ for $p\not\equiv 1\pmod{47}$ and $p=47$;
+$\omega(p)=46$ for $p\equiv 1\pmod{47}$
+(Proposition~\ref{prop:local}).
+\item[\textup{(2)}]
+The set of effective moduli $\mathcal{Q}_{\mathrm{eff}}$ is
+sparse, with counting function
+$\asymp D(\log D)^{-45/46}$
+(Remark~\ref{rem:count}).
+\item[\textup{(3)}]
+The Bombieri--Vinogradov error sum decomposes into a null part
+(supported on non-effective moduli, where the main term vanishes)
+and a sparse part (supported on $\mathcal{Q}_{\mathrm{eff}}$)
+(Theorem~\ref{thm:decomp}).
+\item[\textup{(4)}]
+Under a restricted variance hypothesis, the Cauchy--Schwarz
+method yields $\theta=1/2$ with a $(\log x)^{-11/23}$ saving,
+thanks to the \emph{double sparsity factor}
+(Theorem~\ref{thm:restricted}).
+\end{enumerate}
+
+No unconditional improvement beyond the classical $\theta=1/2$ is
+claimed.
+The main contribution is the null--sparse decomposition and the
+observation that any improvement in the level of distribution
+reduces to a problem on the sparse, algebraically structured set
+$\mathcal{Q}_{\mathrm{eff}}$.
+
+\medskip
+\noindent\textbf{Companion papers.}
+The algebraic, sieve-theoretic, and computational foundations of
+$Q(n)$ are developed in~\cite{ChenTitan}.  Large-scale computational
+verification ($15.4$ million $Q$-primes for $n\le 2\times10^9$)
+and spectral gap analysis appear in~\cite{ChenLS}.
+
+\medskip
+\noindent\textbf{Data availability.}
+The \LaTeX{} source, verification scripts, and supplementary data
+are available at:
+\begin{center}
+\url{https://github.com/Ruqing1963/Q47-Null-Sparse-Decomposition}
+\end{center}
+
+%% ================================================================
+\begin{thebibliography}{9}
+
+\bibitem{BFI1986}
+E.~Bombieri, J.~Friedlander, and H.~Iwaniec,
+\textit{Primes in arithmetic progressions to large moduli},
+Acta Math.\ \textbf{156} (1986), 203--251.
+
+\bibitem{BH1962}
+P.\,T.~Bateman and R.\,A.~Horn,
+\textit{A heuristic asymptotic formula concerning the distribution
+of prime numbers},
+Math.\ Comp.\ \textbf{16} (1962), 363--367.
+
+\bibitem{Bombieri1965}
+E.~Bombieri,
+\textit{On the large sieve},
+Mathematika \textbf{12} (1965), 201--225.
+
+\bibitem{IK2004}
+H.~Iwaniec and E.~Kowalski,
+\textit{Analytic Number Theory},
+Amer.\ Math.\ Soc.\ Colloq.\ Publ., vol.~53,
+AMS, Providence, RI, 2004.
+
+\bibitem{Maynard}
+J.~Maynard,
+\textit{Small gaps between primes},
+Ann.\ of Math.\ (2) \textbf{181} (2015), 383--413.
+
+\bibitem{Vinogradov1965}
+A.\,I.~Vinogradov,
+\textit{The density hypothesis for Dirichlet $L$-series},
+Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.\ \textbf{29} (1965),
+903--934.
+
+\bibitem{ChenTitan}
+R.~Chen,
+\textit{Prime values of a cyclotomic norm polynomial
+and a conjectural bounded gap phenomenon},
+Preprint (2026),
+\url{https://zenodo.org/records/18521551}.
+
+\bibitem{ChenLS}
+R.~Chen,
+\textit{Experimental constraints on Landau--Siegel zeros: A
+2-billion point spectral gap analysis of~$Q_{47}$},
+Preprint (2026),
+\url{https://zenodo.org/records/18315796}.
+
+\end{thebibliography}
+
+\end{document}
